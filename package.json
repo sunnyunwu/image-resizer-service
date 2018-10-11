@@ -1,0 +1,15 @@
+{
+  "name": "image-resize",
+  "version": "1.0.0",
+  "description": "Serverless image resizing",
+  "repository": "https://github.com/sunnyunwu/image-resizer-service",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "dependencies": {
+    "sharp": "^0.17.3",
+    "stream": "0.0.2"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.36.0"
+  }
+}
