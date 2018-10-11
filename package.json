@@ -1,7 +1,7 @@
 {
-  "name": "image-resize",
+  "name": "image-resizer-service",
   "version": "1.0.0",
-  "description": "Serverless image resizing",
+  "description": "Serverless image resizer service",
   "repository": "https://github.com/sunnyunwu/image-resizer-service",
   "license": "Apache-2.0",
   "main": "index.js",
