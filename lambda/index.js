@@ -1,4 +1,5 @@
 'use strict';
+
 // require modules
 const AWS = require('aws-sdk');
 const S3 = new AWS.S3({
@@ -10,7 +11,6 @@ const Sharp = require('sharp');
 const BUCKET = process.env.BUCKET;
 const URL = process.env.URL;
 const RAW = process.env.RAW;
-const RESIZED = process.env.RESIZED;
 
 exports.handler = function (event, context, callback) {
   const key = event.queryStringParameters.key;
@@ -45,23 +45,20 @@ exports.handler = function (event, context, callback) {
       return context.fail("wrong image format");
     }
 
-    // async control flow: download image from S3 -> resize image-> upload new image to S3
+    // async control flow: download image from S3 -> resize image-> upload new image to S3->redirect
     // retrieve the original image from S3
     const params = {
       Bucket: BUCKET,
       Key: RAW + '/' + srcKey
     };
+
     S3.getObject(params)
       .promise()
       .then(data => resize(data, width, height)
       )
       .then(buffer => uploadToS3(buffer, params)
       )
-      .then(() => context.succeed({
-          statusCode: '301', //redirect
-          headers: {'location': `${URL}/${RESIZED}/${key}`},
-          body: '',
-        })
+      .then(() => redirect()
       )
       .catch(function (err) {
         console.log(err);
@@ -83,12 +80,20 @@ exports.handler = function (event, context, callback) {
   function uploadToS3 (data, params) {
     return S3.putObject({
       Bucket: BUCKET,
-      Key: RESIZED + '/' +key,
+      Key: key,
       Body: data,
       ContentType: 'image/jpeg',
       ACL: 'public-read'
     })
     .promise()
+  }
+  // redirect to new created location in S3 
+  function redirect () {
+    return context.succeed({
+          statusCode: '301', //redirect
+          headers: {'location': `${URL}/${key}`},
+          body: ''
+        });
   }
 }
  
