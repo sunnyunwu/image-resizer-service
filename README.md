@@ -32,4 +32,3 @@ http://image-resizer-yw.s3-website-us-west-2.amazonaws.com/resizedImage/400x200/
 http://image-resizer-yw.s3-website-us-west-2.amazonaws.com/resizedImage/500x200/sun.gif
 ```
 The image resizer service keeps the original aspect ratio when resizes the images. 
-The image resizer service can resize .gif image, but resized .gif image becomes static. It is because the Sharp module uses the first frame and does not support GIF output now. 
